@@ -1,0 +1,21 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+env/
+.env.*
+.ipynb_checkpoints/
+
+# Local data & models (regenerate with the scripts)
+data/saferoute.db
+data/raw/*.csv
+data/processed/*
+ml/models/*.joblib
+!data/raw/.gitkeep
+!data/processed/.gitkeep
+
+# Editors / OS
+.vscode/
+.idea/
+.DS_Store

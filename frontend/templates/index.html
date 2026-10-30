@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SafeRoute - safety-aware navigation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <header class="topbar">
+    <h1>SafeRoute</h1>
+    <button id="sos-btn" class="sos" type="button">SOS</button>
+  </header>
+
+  <main class="layout">
+    <section class="panel" aria-label="Plan a route">
+      <form id="route-form" autocomplete="off">
+        <label for="src">From</label>
+        <div class="with-btn">
+          <input id="src" placeholder="Place name or lat, lon" required>
+          <button id="use-loc" type="button" title="Use my current location">Use my location</button>
+        </div>
+
+        <label for="dst">To</label>
+        <input id="dst" placeholder="Place name or lat, lon" required>
+
+        <div class="row">
+          <div>
+            <label for="time">Travel time</label>
+            <input id="time" type="time" required>
+          </div>
+          <div>
+            <label for="w">Safety vs speed</label>
+            <input id="w" type="range" min="0" max="100" value="60" aria-describedby="w-hint">
+            <small id="w-hint">Left: faster. Right: safer.</small>
+          </div>
+        </div>
+
+        <button id="go" class="primary" type="submit">Find routes</button>
+      </form>
+
+      <p id="status" role="status" aria-live="polite"></p>
+      <div id="results"></div>
+
+      <fieldset class="toggles">
+        <legend>Map layers</legend>
+        <label><input type="checkbox" id="t-fac"> Police stations and hospitals</label>
+        <label><input type="checkbox" id="t-hot"> Risk hotspots</label>
+        <label><input type="checkbox" id="t-inc"> Reported incidents</label>
+      </fieldset>
+
+      <button id="report-btn" type="button" class="secondary">Report an incident</button>
+
+      <p class="disclaimer">
+        SafeRoute shows estimated relative risk from past data. It cannot guarantee that
+        any route is safe. In an emergency call 112.
+      </p>
+    </section>
+
+    <div id="map" aria-label="Map"></div>
+  </main>
+
+  <dialog id="report-dialog">
+    <form method="dialog" id="report-form">
+      <h2>Report an incident</h2>
+      <p id="report-where"></p>
+      <label for="r-type">What happened?</label>
+      <select id="r-type" required></select>
+      <label for="r-desc">Details (optional)</label>
+      <textarea id="r-desc" maxlength="300" rows="3"></textarea>
+      <div class="dialog-actions">
+        <button value="cancel" type="button" id="r-cancel" class="secondary">Cancel</button>
+        <button value="ok" type="submit" class="primary">Save report</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog id="sos-dialog">
+    <h2>Emergency help</h2>
+    <p><a class="call" href="tel:112">Call 112 (emergency)</a></p>
+    <p><a class="call" href="tel:1091">Call 1091 (women helpline)</a></p>
+    <p><button id="share-loc" type="button" class="primary">Share my location</button></p>
+    <p id="sos-msg" role="status"></p>
+    <p class="disclaimer">This prototype does not contact anyone automatically.</p>
+    <div class="dialog-actions"><button id="sos-close" type="button" class="secondary">Close</button></div>
+  </dialog>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>
